@@ -1,0 +1,129 @@
+/* styles/global.css */
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fa;
+  color: #333;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.tag {
+  background-color: #dff0d8;
+  color: #3c763d;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.section {
+  margin-top: 30px;
+}
+
+.meal-card {
+  background-color: #ffffff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.meal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.meal-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tip-card {
+  background-color: #e9f5ff;
+  padding: 15px;
+  border-left: 4px solid #2196f3;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.meal-details {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-left: 4px solid #888;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+.details-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.details-wrapper.open {
+  max-height: 300px; /* adjust based on content */
+  opacity: 1;
+}
+
+.meal-details {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-left: 4px solid #888;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated-tip {
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.tip-card {
+  background-color: #e9f5ff;
+  padding: 15px;
+  border-left: 4px solid #2196f3;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
