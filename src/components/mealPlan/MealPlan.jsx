@@ -1,88 +1,83 @@
+// src/components/mealPlan/MealPlan.jsx
 import React, { useState } from "react";
+import { DAILY_MENU_PLAN } from "./utils/dailyMenuPlan";
+import RecipeDetailsModal from "./RecipeDetailsModal";
+import QuickMealDetailsModal from "./QuickMealDetailsModal";
 
-const meals = {
-  breakfast: ["Oats with berries 🍓", "Green tea 🍵"],
-  lunch: ["Grilled chicken with quinoa and veggies", "Apple"],
-  dinner: ["Lentil soup with multigrain bread"],
-};
-
-// MealCard with slide toggle
-const MealCard = ({ title, items, details }) => {
+const MealCard = ({ title, items, onShowQuick, onShowRecipe }) => {
   const [eaten, setEaten] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+
+  // Choose which recipe to show when pressing Details/Recipe.
+  // Here we open the first item; you can change to any selection logic you like.
+  const primary = items[0];
 
   return (
     <div className="meal-card">
       <div className="meal-title">{title}</div>
-      <ul>
-        {items.map((item, i) => <li key={i}>{item}</li>)}
+
+      {/* Items list (no per-item buttons) */}
+      <ul style={{ marginBottom: 12 }}>
+        {items.map((item, i) => (
+          <li key={i} style={{ marginBottom: 8 }}>{item.title}</li>
+        ))}
       </ul>
 
-      <div className="meal-actions">
-        <button onClick={() => setEaten(!eaten)}>
-          {eaten ? '✅ Eaten' : 'Mark as Eaten'}
-        </button>
-        <button onClick={() => setShowDetails(!showDetails)}>
-          ℹ️ Details
-        </button>
-      </div>
-
-      <div className={`details-wrapper ${showDetails ? 'open' : ''}`}>
-        <div className="meal-details">
-          <p><strong>Calories:</strong> {details.calories} kcal</p>
-          <p><strong>Carbs:</strong> {details.carbs}g</p>
-          <p><strong>Protein:</strong> {details.protein}g</p>
-          <p><strong>Fat:</strong> {details.fat}g</p>
-          {details.ingredients && (
-            <p><strong>Ingredients:</strong> {details.ingredients.join(', ')}</p>
-          )}
+      {/* ONE action row for the whole meal section */}
+      <div className="meal-actions one-row">
+        <div className="recipe-btns">
+          <button onClick={() => setEaten((v) => !v)}>
+            {eaten ? "✅ Eaten" : "Mark as Eaten"}
+          </button>
+          <button onClick={() => onShowQuick(primary)}>Details</button>
+          <button onClick={() => onShowRecipe(primary)}>Recipe</button>
         </div>
       </div>
     </div>
   );
 };
 
+export default function MealPlan() {
+  const [quickOpen, setQuickOpen] = useState(false);
+  const [recipeOpen, setRecipeOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
 
+  const showQuick = (meal) => { setSelected(meal); setQuickOpen(true); };
+  const showRecipe = (meal) => { setSelected(meal); setRecipeOpen(true); };
 
-const MealPlan = () => {
   return (
     <div className="section">
       <MealCard
         title="🍽️ Breakfast"
-        items={["Oats with berries 🍓", "Green tea 🍵"]}
-        details={{
-          calories: 320,
-          carbs: 45,
-          protein: 8,
-          fat: 5,
-          ingredients: ["Oats", "Berries", "Green Tea"]
-        }}
+        items={DAILY_MENU_PLAN.breakfast}
+        onShowQuick={showQuick}
+        onShowRecipe={showRecipe}
       />
       <MealCard
         title="🍱 Lunch"
-        items={["Grilled chicken with quinoa and veggies", "Apple"]}
-        details={{
-          calories: 550,
-          carbs: 40,
-          protein: 35,
-          fat: 20,
-          ingredients: ["Chicken", "Quinoa", "Broccoli", "Apple"]
-        }}
+        items={DAILY_MENU_PLAN.lunch}
+        onShowQuick={showQuick}
+        onShowRecipe={showRecipe}
       />
       <MealCard
         title="🍲 Dinner"
-        items={["Lentil soup with multigrain bread"]}
-        details={{
-          calories: 410,
-          carbs: 55,
-          protein: 20,
-          fat: 10,
-          ingredients: ["Lentils", "Vegetables", "Multigrain Bread"]
-        }}
+        items={DAILY_MENU_PLAN.dinner}
+        onShowQuick={showQuick}
+        onShowRecipe={showRecipe}
+      />
+
+      {/* Compact details (times + nutrition only) */}
+      <QuickMealDetailsModal
+        open={quickOpen}
+        meal={selected}
+        onClose={() => setQuickOpen(false)}
+      />
+
+      {/* Full recipe (steps + ingredients) */}
+      <RecipeDetailsModal
+        open={recipeOpen}
+        recipe={selected}
+        onClose={() => setRecipeOpen(false)}
       />
     </div>
   );
-};
-
-
-export default MealPlan;
+}

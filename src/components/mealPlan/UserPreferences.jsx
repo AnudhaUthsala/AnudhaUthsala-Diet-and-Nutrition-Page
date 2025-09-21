@@ -1,27 +1,40 @@
 import React from "react";
 
-const UserPreferences = () => {
+const Tag = ({ children }) => <span className="tag">{children}</span>;
+
+const UserPreferences = ({ prefs, onEdit }) => {
+  const { name, dietTypes = [], allergies = [] } = prefs;
+
   return (
-    <div className="header" id="no-bg">
+    <div className="header">
       <div className="user-info">
         <img
-          src="https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg"
+          src="https://cdn-icons-png.freepik.com/512/219/219988.png"
           alt="User Avatar"
-          width="50"
-          height="50"
+          width="72"
+          height="72"
+          style={{ borderRadius: "50%" }}
         />
         <div>
-          <div>
-            <strong>John Doe</strong>
-          </div>
+          <div style={{ fontWeight: 600 }}>{name}</div>
           <div className="user-tags">
-            <span className="tag">Diabetic</span>
-            <span className="tag">Vegetarian</span>
-            <span className="tag">Allergy: Nuts</span>
+            {dietTypes.map((d) => (
+              <Tag key={`diet-${d}`}>{d}</Tag>
+            ))}
+            {allergies.map((a) => (
+              <Tag key={`allergy-${a}`}>Allergy: {a}</Tag>
+            ))}
           </div>
         </div>
       </div>
-      <button>Edit Preferences</button>
+      {/* FIXED: button now definitely triggers modal */}
+      <button
+        className="btn btn-primary"
+        type="button"
+        onClick={() => onEdit && onEdit()}
+      >
+        ✏ Edit Preferences
+      </button>
     </div>
   );
 };
